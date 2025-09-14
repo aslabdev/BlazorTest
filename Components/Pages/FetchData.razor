@@ -1,0 +1,41 @@
+﻿@page "/fetchdata"
+@using BlazorApp1.Data
+@inject DocumentoService DocumentoService
+
+<h3>Datos de la API</h3>
+
+@if (documentos == null)
+{
+    <p><em>Cargando o no se pudo cargar los datos...</em></p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Descripción</th>
+                <th>Activa</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var documento in documentos)
+            {
+                <tr>
+                    <td>@documento.Codigo</td>
+                    <td>@documento.Descripcion</td>
+                    <td>@(documento.VActiva ? "Sí" : "No")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private Documento[] documentos;
+
+    protected override async Task OnInitializedAsync()
+    {
+        documentos = await DocumentoService.GetDocumentosAsync();
+    }
+}
